@@ -1,134 +1,57 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { Sidebar } from './components/sideBar'
+import { EmployeeTable } from './features/employees/EmployeeTable'
+import { mockEmployees } from './features/employees/data/mockEmployee'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const activeCount = mockEmployees.filter(
+    (employee) => employee.status === 'Active',
+  ).length
 
+  const leaveCount = mockEmployees.filter(
+    (employee) => employee.status === 'On leave',
+  ).length
 
-  const name = "Santhosh";
-  const age = 27;
+  const departmentCount = new Set(
+    mockEmployees.map((employee) => employee.department),
+  ).size
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <h2>Santhoshbabu M S</h2>
-          <h3>IT Analyst</h3>
-          <h4>TCS pvt</h4>
+    <div className="app-shell" id="overview">
+      <Sidebar />
 
-          <div>
-            Name : {name} 
-            <br/>
-            age : {age}
-          </div>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      <main className="dashboard-main">
+        <header className="page-heading">
+          <p>PEOPLE OPERATIONS</p>
+          <h1>Employee dashboard</h1>
+          <span>A quick look at your team.</span>
+        </header>
 
-      <div className="ticks"></div>
+        <section className="summary-cards" aria-label="Employee summary">
+          <article className="summary-card">
+            <h2>Total employees</h2>
+            <p>{mockEmployees.length}</p>
+          </article>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <article className="summary-card">
+            <h2>Active</h2>
+            <p>{activeCount}</p>
+          </article>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+          <article className="summary-card">
+            <h2>On leave</h2>
+            <p>{leaveCount}</p>
+          </article>
+
+          <article className="summary-card">
+            <h2>Departments</h2>
+            <p>{departmentCount}</p>
+          </article>
+        </section>
+
+        <EmployeeTable employees={mockEmployees} />
+      </main>
+    </div>
   )
 }
 
