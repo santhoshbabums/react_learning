@@ -1,0 +1,106 @@
+.employee-search {
+  display: grid;
+  gap: 6px;
+  width: min(100%, 360px);
+  margin-bottom: 20px;
+}
+
+.employee-search label {
+  color: #52635a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.employee-search input {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d8e0d5;
+  border-radius: 6px;
+  background: #fff;
+  color: #34483e;
+  font-size: 13px;
+}
+
+.employee-search input::placeholder {
+  color: #99a49c;
+}
+
+.employee-search input:focus-visible {
+  border-color: #547b62;
+  outline: 2px solid #c8ddc6;
+  outline-offset: 1px;
+}
+
+
+/*  Department portian */
+
+.department-filter {
+  display: grid;
+  gap: 6px;
+  width: min(100%, 360px);
+  margin-bottom: 20px;
+}
+
+.department-filter label {
+  color: #52635a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.department-filter select {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d8e0d5;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #34483e;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.department-filter select:hover {
+  border-color: #aebdaf;
+}
+
+.department-filter select:focus-visible {
+  border-color: #547b62;
+  outline: 2px solid #c8ddc6;
+  outline-offset: 1px;
+}
+
+/* Status portion */
+
+
+.status-filter {
+  display: grid;
+  gap: 6px;
+  width: min(100%, 360px);
+  margin-bottom: 20px;
+}
+
+.status-filter label {
+  color: #52635a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-filter select {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d8e0d5;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #34483e;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.status-filter select:hover {
+  border-color: #aebdaf;
+}
+
+.status-filter select:focus-visible {
+  border-color: #547b62;
+  outline: 2px solid #c8ddc6;
+  outline-offset: 1px;
+}

@@ -1,4 +1,4 @@
-import { Sidebar } from './components/sideBar'
+import { Sidebar } from './components/Sidebar'
 import { EmployeeTable } from './features/employees/EmployeeTable'
 import { mockEmployees } from './features/employees/data/mockEmployee'
 import './App.css'
