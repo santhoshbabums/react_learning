@@ -5,32 +5,60 @@ import './EmployeeForm.css'
 export type NewEmployee = Omit<Employee, 'id' | 'initials'>
 
 interface EmployeeFormProps {
-    onAddEmployee: (employee: NewEmployee) => void
+    initialEmployee?: Employee
+    // onAddEmployee: (employee: NewEmployee) => void
+    onSaveEmployee: (employee: NewEmployee, id?: number) => void
     onCancel: () => void
 }
 
 export function EmployeeForm({
-    onAddEmployee,
+    initialEmployee,
+    // onAddEmployee,
+    onSaveEmployee,
     onCancel,
 }: EmployeeFormProps) {
-    const [name, setName] = useState('')
-    const [role, setRole] = useState('')
-    const [department, setDepartment] = useState('')
-    const [email, setEmail] = useState('')
-    const [location, setLocation] = useState('')
-    const [status, setStatus] = useState<EmployeeStatus>('Active')
+
+    // Before addition of editing functionaity
+
+    // const [name, setName] = useState('')
+    // const [role, setRole] = useState('')
+    // const [department, setDepartment] = useState('')
+    // const [email, setEmail] = useState('')
+    // const [location, setLocation] = useState('')
+    // const [status, setStatus] = useState<EmployeeStatus>('Active')
+
+    const [name, setName] = useState(initialEmployee?.name ?? '')
+    const [role, setRole] = useState(initialEmployee?.role ?? '')
+    const [department, setDepartment] = useState(initialEmployee?.department ?? '')
+    const [email, setEmail] = useState(initialEmployee?.email ?? '')
+    const [location, setLocation] = useState(initialEmployee?.location ?? '')
+    const [status, setStatus] = useState<EmployeeStatus>(
+        initialEmployee?.status ?? 'Active',
+    )
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
-        onAddEmployee({
-            name: name.trim(),
-            role: role.trim(),
-            department: department.trim(),
-            email: email.trim(),
-            location: location.trim(),
-            status,
-        })
+        // onAddEmployee({
+        //     name: name.trim(),
+        //     role: role.trim(),
+        //     department: department.trim(),
+        //     email: email.trim(),
+        //     location: location.trim(),
+        //     status,
+        // })
+
+        onSaveEmployee(
+            {
+                name: name.trim(),
+                role: role.trim(),
+                department: department.trim(),
+                email: email.trim(),
+                location: location.trim(),
+                status,
+            },
+            initialEmployee?.id,
+        )
     }
 
     //   return (
@@ -94,7 +122,7 @@ export function EmployeeForm({
 
     return (
         <form className="employee-form" onSubmit={handleSubmit}>
-            <h2>Add employee</h2>
+            <h2>{initialEmployee ? 'Edit employee' : 'Add employee'}</h2>
 
             <div className="employee-form-fields">
                 <div className="employee-form-field">
@@ -168,7 +196,9 @@ export function EmployeeForm({
                 <button type="button" onClick={onCancel}>
                     Cancel
                 </button>
-                <button type="submit">Add employee</button>
+                <button type="submit">
+                    {initialEmployee ? 'Save changes' : 'Add employee'}
+                </button>
             </div>
         </form>
     )

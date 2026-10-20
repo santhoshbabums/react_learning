@@ -4,10 +4,11 @@ import './EmployeeTable.css'
 
 interface EmployeeTableProps {
     employees: Employee[]
+    onEditEmployee: (employee: Employee) => void
 }
 
 
-export function EmployeeTable({ employees }: EmployeeTableProps) {
+export function EmployeeTable({ employees, onEditEmployee }: EmployeeTableProps) {
 
     const [searchName, setSearchName] = useState('')
     const [selectedDepartment, setSelectedDepartment] = useState('All')
@@ -91,6 +92,7 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                         <th scope="col">Department</th>
                         <th scope="col">Status</th>
                         <th scope="col">Location</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
 
@@ -105,6 +107,15 @@ export function EmployeeTable({ employees }: EmployeeTableProps) {
                             <td>{employee.department}</td>
                             <td>{employee.status}</td>
                             <td>{employee.location}</td>
+                            <td>
+                                <button
+                                    type="button"
+                                    onClick={() => onEditEmployee(employee)}
+                                    aria-label={`Edit ${employee.name}`}
+                                >
+                                    Edit
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

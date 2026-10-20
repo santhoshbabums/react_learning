@@ -29,7 +29,8 @@ function App() {
 
     // phase 2
 
-    function handleAddEmployee(employee: NewEmployee) {
+    function handleSaveEmployee(employee: NewEmployee, id?: number) {
+        // Make initials for the new or edited name.
         const initials = employee.name
             .trim()
             .split(/\s+/)
@@ -38,12 +39,31 @@ function App() {
             .slice(0, 2)
             .toUpperCase()
 
-        setEmployees((currentEmployees) => [
-            ...currentEmployees,
-            { ...employee, id: Date.now(), initials },
-        ])
+        setEmployees((currentEmployees) => {
+            // No ID means this is a new employee, so append.
+            if (id === undefined) {
+                return [...currentEmployees, { ...employee, id: Date.now(), initials }]
+            }
 
+            // An ID means edit: replace only the matching employee.
+            return currentEmployees.map((currentEmployee) =>
+                currentEmployee.id === id
+                    ? { ...currentEmployee, ...employee, initials }
+                    : currentEmployee,
+                    console.log("currentEmployee",currentEmployees)
+            )
+        })
+
+        setEditingEmployee(null)
         setIsAddingEmployee(false)
+    }
+
+    //phase 3 
+
+    const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null)
+    function handleEditEmployee(employee: Employee) {
+        setEditingEmployee(employee)
+        setIsAddingEmployee(true)
     }
 
     return (
@@ -56,14 +76,21 @@ function App() {
                     <h1>Employee dashboard</h1>
                     <span>A quick look at your team.</span>
 
-                    <button type="button" onClick={() => setIsAddingEmployee(true)}>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setEditingEmployee(null)
+                            setIsAddingEmployee(true)
+                        }}
+                    >
                         Add employee
                     </button>
                 </header>
 
                 {isAddingEmployee && (
                     <EmployeeForm
-                        onAddEmployee={handleAddEmployee}
+                        initialEmployee={editingEmployee ?? undefined}
+                        onSaveEmployee={handleSaveEmployee}
                         onCancel={() => setIsAddingEmployee(false)}
                     />
                 )}
@@ -90,7 +117,10 @@ function App() {
                     </article>
                 </section>
 
-                <EmployeeTable employees={employees} />
+                <EmployeeTable
+                    employees={employees}
+                    onEditEmployee={handleEditEmployee}
+                />
             </main>
         </div>
     )
