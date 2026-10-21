@@ -5,10 +5,11 @@ import './EmployeeTable.css'
 interface EmployeeTableProps {
     employees: Employee[]
     onEditEmployee: (employee: Employee) => void
+    onDeleteEmployee: (employee: Employee) => void
 }
 
 
-export function EmployeeTable({ employees, onEditEmployee }: EmployeeTableProps) {
+export function EmployeeTable({ employees, onEditEmployee, onDeleteEmployee }: EmployeeTableProps) {
 
     const [searchName, setSearchName] = useState('')
     const [selectedDepartment, setSelectedDepartment] = useState('All')
@@ -115,7 +116,15 @@ export function EmployeeTable({ employees, onEditEmployee }: EmployeeTableProps)
                                 >
                                     Edit
                                 </button>
+                                <button
+                                    type="button"
+                                    onClick={() => onDeleteEmployee(employee)}
+                                    aria-label={`Delete ${employee.name}`}
+                                >
+                                    Delete
+                                </button>
                             </td>
+
                         </tr>
                     ))}
                 </tbody>

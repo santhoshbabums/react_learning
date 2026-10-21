@@ -50,7 +50,6 @@ function App() {
                 currentEmployee.id === id
                     ? { ...currentEmployee, ...employee, initials }
                     : currentEmployee,
-                    console.log("currentEmployee",currentEmployees)
             )
         })
 
@@ -64,6 +63,22 @@ function App() {
     function handleEditEmployee(employee: Employee) {
         setEditingEmployee(employee)
         setIsAddingEmployee(true)
+    }
+
+    //phase 4 
+
+    function handleDeleteEmployee(employee: Employee) {
+        const confirmed = window.confirm(
+            `Are you sure you want to delete ${employee.name}?`,
+        )
+
+        if (!confirmed) return
+
+        setEmployees((currentEmployees) =>
+            currentEmployees.filter(
+                (currentEmployee) => currentEmployee.id !== employee.id,
+            ),
+        )
     }
 
     return (
@@ -120,6 +135,7 @@ function App() {
                 <EmployeeTable
                     employees={employees}
                     onEditEmployee={handleEditEmployee}
+                    onDeleteEmployee={handleDeleteEmployee}
                 />
             </main>
         </div>
