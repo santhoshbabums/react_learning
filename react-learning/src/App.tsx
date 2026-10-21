@@ -2,6 +2,8 @@ import { Sidebar } from './components/Sidebar'
 import { EmployeeTable } from './features/employees/EmployeeTable'
 import { mockEmployees } from './features/employees/data/mockEmployee'
 import './App.css'
+import { Route, Routes } from 'react-router-dom'
+import { EmployeeDetails } from './features/employees/EmployeeDetails'
 
 //  phase 2 
 import { useState } from 'react'
@@ -84,61 +86,74 @@ function App() {
     return (
         <div className="app-shell" id="overview">
             <Sidebar />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <main className="dashboard-main">
+                            <header className="page-heading">
+                                <p>PEOPLE OPERATIONS</p>
+                                <h1>Employee dashboard</h1>
+                                <span>A quick look at your team.</span>
 
-            <main className="dashboard-main">
-                <header className="page-heading">
-                    <p>PEOPLE OPERATIONS</p>
-                    <h1>Employee dashboard</h1>
-                    <span>A quick look at your team.</span>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setEditingEmployee(null)
+                                        setIsAddingEmployee(true)
+                                    }}
+                                >
+                                    Add employee
+                                </button>
+                            </header>
 
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setEditingEmployee(null)
-                            setIsAddingEmployee(true)
-                        }}
-                    >
-                        Add employee
-                    </button>
-                </header>
+                            {isAddingEmployee && (
+                                <EmployeeForm
+                                    initialEmployee={editingEmployee ?? undefined}
+                                    onSaveEmployee={handleSaveEmployee}
+                                    onCancel={() => setIsAddingEmployee(false)}
+                                />
+                            )}
 
-                {isAddingEmployee && (
-                    <EmployeeForm
-                        initialEmployee={editingEmployee ?? undefined}
-                        onSaveEmployee={handleSaveEmployee}
-                        onCancel={() => setIsAddingEmployee(false)}
-                    />
-                )}
+                            <section className="summary-cards" aria-label="Employee summary">
+                                <article className="summary-card">
+                                    <h2>Total employees</h2>
+                                    <p>{employees.length}</p>
+                                </article>
 
-                <section className="summary-cards" aria-label="Employee summary">
-                    <article className="summary-card">
-                        <h2>Total employees</h2>
-                        <p>{employees.length}</p>
-                    </article>
+                                <article className="summary-card">
+                                    <h2>Active</h2>
+                                    <p>{activeCount}</p>
+                                </article>
 
-                    <article className="summary-card">
-                        <h2>Active</h2>
-                        <p>{activeCount}</p>
-                    </article>
+                                <article className="summary-card">
+                                    <h2>On leave</h2>
+                                    <p>{leaveCount}</p>
+                                </article>
 
-                    <article className="summary-card">
-                        <h2>On leave</h2>
-                        <p>{leaveCount}</p>
-                    </article>
+                                <article className="summary-card">
+                                    <h2>Departments</h2>
+                                    <p>{departmentCount}</p>
+                                </article>
+                            </section>
 
-                    <article className="summary-card">
-                        <h2>Departments</h2>
-                        <p>{departmentCount}</p>
-                    </article>
-                </section>
-
-                <EmployeeTable
-                    employees={employees}
-                    onEditEmployee={handleEditEmployee}
-                    onDeleteEmployee={handleDeleteEmployee}
+                            <EmployeeTable
+                                employees={employees}
+                                onEditEmployee={handleEditEmployee}
+                                onDeleteEmployee={handleDeleteEmployee}
+                            />
+                        </main>
+                    }
                 />
-            </main>
+                <Route
+                    path="/employees/:employeeId"
+                    element={<EmployeeDetails employees={employees} />}
+                />
+            </Routes>
+
         </div>
+
+
     )
 }
 

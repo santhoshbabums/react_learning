@@ -1,6 +1,7 @@
 import type { Employee } from './types'
 import { useState } from 'react'
 import './EmployeeTable.css'
+import { Link } from 'react-router-dom'
 
 interface EmployeeTableProps {
     employees: Employee[]
@@ -101,7 +102,9 @@ export function EmployeeTable({ employees, onEditEmployee, onDeleteEmployee }: E
                     {filteredEmployees.map((employee) => (
                         <tr key={employee.id}>
                             <td>
-                                <strong>{employee.name}</strong>
+                                <strong>
+                                    <Link to={`/employees/${employee.id}`}>{employee.name}</Link>
+                                </strong>
                                 <br />
                                 {employee.role}
                             </td>
