@@ -1,29 +1,30 @@
+import { NavLink } from 'react-router-dom'
+
 const navigationItems = [
-  'Overview',
-  'Employees',
-  'Departments',
-  'Time off',
-  'Reports',
+  { label: 'Overview', to: '/' },
+  { label: 'Employees', to: '/employees' },
 ]
 
 export function Sidebar() {
   return (
     <aside className="sidebar">
-      <a className="brand" href="#overview">
+      <NavLink className="brand" to="/">
         People Desk
-      </a>
+      </NavLink>
 
       <nav aria-label="Main navigation">
         <ul className="navigation-list">
-          {navigationItems.map((item, index) => (
-            <li key={item}>
-              <a
-                className={index === 0 ? 'navigation-link is-active' : 'navigation-link'}
-                href={`#${item.toLowerCase().replaceAll(' ', '-')}`}
-                aria-current={index === 0 ? 'page' : undefined}
+          {navigationItems.map((item) => (
+            <li key={item.label}>
+              <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                  isActive ? 'navigation-link is-active' : 'navigation-link'
+                }
+                end={item.to === '/'}
               >
-                {item}
-              </a>
+                {item.label}
+              </NavLink>
             </li>
           ))}
         </ul>

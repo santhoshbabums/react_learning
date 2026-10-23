@@ -291,9 +291,111 @@
   align-items: flex-start;
 }
 
+.overview-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.overview-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.overview-panel {
+  padding: 20px 20px 12px;
+  border: 1px solid #dfe7dd;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 30px -26px rgba(22, 52, 44, 0.45);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  color: #1d3d35;
+  font: 600 22px 'Georgia', serif;
+}
+
+.panel-link {
+  color: #244d3f;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.department-list,
+.recent-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.department-item,
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #edf1ea;
+}
+
+.department-item:last-child,
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.department-item span,
+.recent-details span {
+  color: #5f7068;
+}
+
+.department-item strong,
+.recent-details strong {
+  color: #1d3b35;
+}
+
+.recent-item {
+  justify-content: flex-start;
+}
+
+.recent-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d5a41 0%, #4f8d72 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.recent-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 @media (max-width: 850px) {
   .summary-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .overview-panels {
+    grid-template-columns: 1fr;
   }
 }
 
