@@ -44,47 +44,49 @@ export function EmployeeTable({ employees, onEditEmployee, onDeleteEmployee }: E
         <section aria-labelledby="employee-directory-heading">
             <h2 id="employee-directory-heading">Employee directory</h2>
 
-            <div className="employee-search">
-                <label htmlFor="employee-search">Search by name</label>
-                <input
-                    id="employee-search"
-                    type="search"
-                    value={searchName}
-                    onChange={(event) => setSearchName(event.target.value)}
-                    placeholder="Type an employee name"
-                />
-            </div>
+            <div className="table-filters">
+                <div className="employee-search">
+                    <label htmlFor="employee-search">Search by name</label>
+                    <input
+                        id="employee-search"
+                        type="search"
+                        value={searchName}
+                        onChange={(event) => setSearchName(event.target.value)}
+                        placeholder="Type an employee name"
+                    />
+                </div>
 
-            <div className="department-filter">
-                <label htmlFor="employee-department">Department</label>
-                <select
-                    id="employee-department"
-                    value={selectedDepartment}
-                    onChange={(event) => setSelectedDepartment(event.target.value)}
-                >
-                    <option value="All">All departments</option>
-                    {departments.map((department) => (
-                        <option key={department} value={department}>
-                            {department}
-                        </option>
-                    ))}
-                </select>
-            </div>
+                <div className="department-filter">
+                    <label htmlFor="employee-department">Department</label>
+                    <select
+                        id="employee-department"
+                        value={selectedDepartment}
+                        onChange={(event) => setSelectedDepartment(event.target.value)}
+                    >
+                        <option value="All">All departments</option>
+                        {departments.map((department) => (
+                            <option key={department} value={department}>
+                                {department}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
-            <div className="status-filter">
-                <label htmlFor="employee-status">Status</label>
-                <select
-                    id="employee-status"
-                    value={selectedStatus}
-                    onChange={(event) => setSelectedStatus(event.target.value)}
-                >
-                    <option value="All">All statuses</option>
-                    {statuses.map((status) => (
-                        <option key={status} value={status}>
-                            {status}
-                        </option>
-                    ))}
-                </select>
+                <div className="status-filter">
+                    <label htmlFor="employee-status">Status</label>
+                    <select
+                        id="employee-status"
+                        value={selectedStatus}
+                        onChange={(event) => setSelectedStatus(event.target.value)}
+                    >
+                        <option value="All">All statuses</option>
+                        {statuses.map((status) => (
+                            <option key={status} value={status}>
+                                {status}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <table>
@@ -103,29 +105,39 @@ export function EmployeeTable({ employees, onEditEmployee, onDeleteEmployee }: E
                         <tr key={employee.id}>
                             <td>
                                 <strong>
-                                    <Link to={`/employees/${employee.id}`}>{employee.name}</Link>
+                                    <Link className="employee-name-link" to={`/employees/${employee.id}`}>
+                                        {employee.name}
+                                    </Link>
                                 </strong>
                                 <br />
-                                {employee.role}
+                                <span className="employee-role">{employee.role}</span>
                             </td>
                             <td>{employee.department}</td>
-                            <td>{employee.status}</td>
+                            <td>
+                                <span className={`status-badge status-${employee.status.toLowerCase().replace(/\s+/g, '-')}`}>
+                                    {employee.status}
+                                </span>
+                            </td>
                             <td>{employee.location}</td>
                             <td>
-                                <button
-                                    type="button"
-                                    onClick={() => onEditEmployee(employee)}
-                                    aria-label={`Edit ${employee.name}`}
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => onDeleteEmployee(employee)}
-                                    aria-label={`Delete ${employee.name}`}
-                                >
-                                    Delete
-                                </button>
+                                <div className="employee-actions">
+                                    <button
+                                        type="button"
+                                        className="table-action edit-action"
+                                        onClick={() => onEditEmployee(employee)}
+                                        aria-label={`Edit ${employee.name}`}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="table-action delete-action"
+                                        onClick={() => onDeleteEmployee(employee)}
+                                        aria-label={`Delete ${employee.name}`}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
 
                         </tr>

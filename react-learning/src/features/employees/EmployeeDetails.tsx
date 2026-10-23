@@ -13,32 +13,57 @@ export function EmployeeDetails({ employees }: EmployeeDetailsProps) {
 
   if (!employee) {
     return (
-      <main>
-        <h1>Employee not found</h1>
-        <Link to="/">Back to dashboard</Link>
+      <main className="employee-details empty-state">
+        <div className="details-card">
+          <p className="eyebrow">Employee profile</p>
+          <h1>Employee not found</h1>
+          <Link className="back-link" to="/">Back to dashboard</Link>
+        </div>
       </main>
     )
   }
 
   return (
     <main className="employee-details">
-      <Link to="/">Back to dashboard</Link>
-      <h1>{employee.name}</h1>
-      <p>{employee.role}</p>
+      <div className="details-card">
+        <div className="details-header">
+          <div className="profile-badge">{employee.initials}</div>
+          <div>
+            <p className="eyebrow">Employee profile</p>
+            <h1>{employee.name}</h1>
+            <p className="role-line">{employee.role}</p>
+          </div>
+        </div>
 
-      <dl>
-        <dt>Department</dt>
-        <dd>{employee.department}</dd>
+        <div className="details-topbar">
+          <span className={`status-badge status-${employee.status.toLowerCase().replace(/\s+/g, '-')}`}>
+            {employee.status}
+          </span>
+          <Link className="back-link" to="/">Back to dashboard</Link>
+        </div>
 
-        <dt>Email</dt>
-        <dd>{employee.email}</dd>
+        <dl className="employee-meta">
+          <div className="meta-item">
+            <dt>Department</dt>
+            <dd>{employee.department}</dd>
+          </div>
 
-        <dt>Location</dt>
-        <dd>{employee.location}</dd>
+          <div className="meta-item">
+            <dt>Email</dt>
+            <dd>{employee.email}</dd>
+          </div>
 
-        <dt>Status</dt>
-        <dd>{employee.status}</dd>
-      </dl>
+          <div className="meta-item">
+            <dt>Location</dt>
+            <dd>{employee.location}</dd>
+          </div>
+
+          <div className="meta-item">
+            <dt>Status</dt>
+            <dd>{employee.status}</dd>
+          </div>
+        </dl>
+      </div>
     </main>
   )
 }

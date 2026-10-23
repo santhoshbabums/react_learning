@@ -6,13 +6,31 @@ import { Route, Routes } from 'react-router-dom'
 import { EmployeeDetails } from './features/employees/EmployeeDetails'
 
 //  phase 2 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Employee } from './features/employees/types'
 import { EmployeeForm, type NewEmployee } from './features/employees/EmployeeForm'
 
 
 function App() {
-    const [employees, setEmployees] = useState<Employee[]>(mockEmployees)
+    const [employees, setEmployees] = useState<Employee[]>(() => {
+        const savedEmployees = localStorage.getItem('employees')
+
+        if (!savedEmployees) {
+            return mockEmployees
+        }
+
+        try {
+            const parsedEmployees = JSON.parse(savedEmployees) as Employee[]
+            return parsedEmployees.length > 0 ? parsedEmployees : mockEmployees
+        } catch {
+            return mockEmployees
+        }
+    })
+
+    useEffect(() => {
+        localStorage.setItem('employees', JSON.stringify(employees))
+    }, [employees])
+
     // phase 2 
     const [isAddingEmployee, setIsAddingEmployee] = useState(false)
 
@@ -98,6 +116,7 @@ function App() {
 
                                 <button
                                     type="button"
+                                    className="primary-action"
                                     onClick={() => {
                                         setEditingEmployee(null)
                                         setIsAddingEmployee(true)
