@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 const navigationItems = [
   { label: 'Overview', to: '/' },
   { label: 'Employees', to: '/employees' },
+  { label: 'Departments', to: '/departments' },
 ]
 
 export function Sidebar() {

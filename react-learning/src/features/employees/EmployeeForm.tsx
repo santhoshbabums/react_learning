@@ -6,6 +6,7 @@ export type NewEmployee = Omit<Employee, 'id' | 'initials'>
 
 interface EmployeeFormProps {
     initialEmployee?: Employee
+    availableDepartments: string[]
     // onAddEmployee: (employee: NewEmployee) => void
     onSaveEmployee: (employee: NewEmployee, id?: number) => void
     onCancel: () => void
@@ -13,6 +14,7 @@ interface EmployeeFormProps {
 
 export function EmployeeForm({
     initialEmployee,
+    availableDepartments,
     // onAddEmployee,
     onSaveEmployee,
     onCancel,
@@ -35,6 +37,9 @@ export function EmployeeForm({
     const [status, setStatus] = useState<EmployeeStatus>(
         initialEmployee?.status ?? 'Active',
     )
+    const departmentOptions = availableDepartments.includes(department)
+        ? availableDepartments
+        : [department, ...availableDepartments].filter(Boolean)
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -147,12 +152,19 @@ export function EmployeeForm({
 
                 <div className="employee-form-field">
                     <label htmlFor="new-employee-department">Department</label>
-                    <input
+                    <select
                         id="new-employee-department"
                         value={department}
                         onChange={(event) => setDepartment(event.target.value)}
                         required
-                    />
+                    >
+                        <option value="">Select a department</option>
+                        {departmentOptions.map((departmentOption) => (
+                            <option key={departmentOption} value={departmentOption}>
+                                {departmentOption}
+                            </option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="employee-form-field">

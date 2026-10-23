@@ -5,21 +5,23 @@ import { Link } from 'react-router-dom'
 
 interface EmployeeTableProps {
     employees: Employee[]
+    departments: string[]
     onEditEmployee: (employee: Employee) => void
     onDeleteEmployee: (employee: Employee) => void
 }
 
 
-export function EmployeeTable({ employees, onEditEmployee, onDeleteEmployee }: EmployeeTableProps) {
+export function EmployeeTable({
+    employees,
+    departments,
+    onEditEmployee,
+    onDeleteEmployee,
+}: EmployeeTableProps) {
 
     const [searchName, setSearchName] = useState('')
     const [selectedDepartment, setSelectedDepartment] = useState('All')
     const [selectedStatus, setSelectedStatus] = useState('All')
     const statuses = ['Active', 'On leave', 'Probation']
-
-    const departments = [
-        ...new Set(employees.map((employee) => employee.department)),
-    ]
 
     const hasActiveFilters =
         searchName.trim() !== '' ||

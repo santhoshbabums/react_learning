@@ -179,6 +179,135 @@
   color: #8a968e;
 }
 
+.department-form {
+  display: grid;
+  gap: 12px;
+  max-width: 520px;
+  margin-bottom: 26px;
+  padding: 22px;
+  border: 1px solid #dfe7dd;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 30px -26px rgba(22, 52, 44, 0.45);
+}
+
+.department-form-field {
+  display: grid;
+  gap: 7px;
+}
+
+.department-form-field label {
+  color: #52635a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.department-form-field input {
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d8e0d5;
+  border-radius: 10px;
+  background: #fff;
+  color: #34483e;
+  font-size: 13px;
+}
+
+.department-form-field input:focus-visible {
+  border-color: #547b62;
+  outline: 2px solid #c8ddc6;
+  outline-offset: 1px;
+}
+
+.form-error-message {
+  margin: 0;
+  color: #a64b4b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.department-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.secondary-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid #dfe6df;
+  border-radius: 8px;
+  background: #fff;
+  color: #446157;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.department-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.department-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px 18px 16px;
+  border: 1px solid #dfe7dd;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 30px -26px rgba(22, 52, 44, 0.45);
+}
+
+.department-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.department-label {
+  margin: 0 0 6px;
+  color: #718279;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.department-card h2 {
+  margin: 0;
+  color: #203c33;
+  font: 600 24px 'Georgia', serif;
+}
+
+.department-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d5a41 0%, #4b8d6d 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.department-card-meta {
+  margin: 0;
+  color: #5f7068;
+  font-size: 13px;
+}
+
+.department-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .employee-details {
   display: flex;
   align-items: center;
