@@ -3,6 +3,11 @@ import { useState } from 'react'
 import './EmployeeTable.css'
 import { Link } from 'react-router-dom'
 
+type SortableColumn = 'name' | 'department' | 'status'
+type SortDirection = 'asc' | 'desc'
+
+const PAGE_SIZE = 10
+
 interface EmployeeTableProps {
     employees: Employee[]
     departments: string[]
@@ -21,6 +26,9 @@ export function EmployeeTable({
     const [searchName, setSearchName] = useState('')
     const [selectedDepartment, setSelectedDepartment] = useState('All')
     const [selectedStatus, setSelectedStatus] = useState('All')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortColumn, setSortColumn] = useState<SortableColumn>('name')
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
     const statuses = ['Active', 'On leave', 'Probation']
 
     const hasActiveFilters =
@@ -44,10 +52,45 @@ export function EmployeeTable({
         return matchesName && matchesDepartment && matchesStatus
     })
 
+    const sortedEmployees = [...filteredEmployees].sort((first, second) => {
+        const comparison = first[sortColumn].localeCompare(second[sortColumn], undefined, {
+            sensitivity: 'base',
+        })
+
+        return sortDirection === 'asc' ? comparison : -comparison
+    })
+
+    const totalPages = Math.max(1, Math.ceil(sortedEmployees.length / PAGE_SIZE))
+    const pageToDisplay = Math.min(currentPage, totalPages)
+    const firstEmployeeIndex = (pageToDisplay - 1) * PAGE_SIZE
+    const pageEmployees = sortedEmployees.slice(
+        firstEmployeeIndex,
+        firstEmployeeIndex + PAGE_SIZE,
+    )
+    const firstDisplayedEmployee = sortedEmployees.length === 0 ? 0 : firstEmployeeIndex + 1
+    const lastDisplayedEmployee = Math.min(
+        firstEmployeeIndex + PAGE_SIZE,
+        sortedEmployees.length,
+    )
+
+    function handleSort(column: SortableColumn) {
+        if (sortColumn === column) {
+            setSortDirection((currentDirection) =>
+                currentDirection === 'asc' ? 'desc' : 'asc',
+            )
+        } else {
+            setSortColumn(column)
+            setSortDirection('asc')
+        }
+
+        setCurrentPage(1)
+    }
+
     function clearFilters() {
         setSearchName('')
         setSelectedDepartment('All')
         setSelectedStatus('All')
+        setCurrentPage(1)
     }
 
     return (
@@ -61,7 +104,10 @@ export function EmployeeTable({
                         id="employee-search"
                         type="search"
                         value={searchName}
-                        onChange={(event) => setSearchName(event.target.value)}
+                        onChange={(event) => {
+                            setSearchName(event.target.value)
+                            setCurrentPage(1)
+                        }}
                         placeholder="Type an employee name"
                     />
                 </div>
@@ -71,7 +117,10 @@ export function EmployeeTable({
                     <select
                         id="employee-department"
                         value={selectedDepartment}
-                        onChange={(event) => setSelectedDepartment(event.target.value)}
+                        onChange={(event) => {
+                            setSelectedDepartment(event.target.value)
+                            setCurrentPage(1)
+                        }}
                     >
                         <option value="All">All departments</option>
                         {departments.map((department) => (
@@ -87,7 +136,10 @@ export function EmployeeTable({
                     <select
                         id="employee-status"
                         value={selectedStatus}
-                        onChange={(event) => setSelectedStatus(event.target.value)}
+                        onChange={(event) => {
+                            setSelectedStatus(event.target.value)
+                            setCurrentPage(1)
+                        }}
                     >
                         <option value="All">All statuses</option>
                         {statuses.map((status) => (
@@ -114,9 +166,30 @@ export function EmployeeTable({
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Employee</th>
-                        <th scope="col">Department</th>
-                        <th scope="col">Status</th>
+                        <th
+                            scope="col"
+                            aria-sort={sortColumn === 'name' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                        >
+                            <button type="button" className="sortable-header" onClick={() => handleSort('name')}>
+                                Employee Name <span aria-hidden="true">{sortColumn === 'name' ? sortDirection.toUpperCase() : 'SORT'}</span>
+                            </button>
+                        </th>
+                        <th
+                            scope="col"
+                            aria-sort={sortColumn === 'department' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                        >
+                            <button type="button" className="sortable-header" onClick={() => handleSort('department')}>
+                                Department <span aria-hidden="true">{sortColumn === 'department' ? sortDirection.toUpperCase() : 'SORT'}</span>
+                            </button>
+                        </th>
+                        <th
+                            scope="col"
+                            aria-sort={sortColumn === 'status' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                        >
+                            <button type="button" className="sortable-header" onClick={() => handleSort('status')}>
+                                Status <span aria-hidden="true">{sortColumn === 'status' ? sortDirection.toUpperCase() : 'SORT'}</span>
+                            </button>
+                        </th>
                         <th scope="col">Location</th>
                         <th scope="col">Actions</th>
                     </tr>
@@ -133,7 +206,7 @@ export function EmployeeTable({
                             </td>
                         </tr>
                     ) : (
-                        filteredEmployees.map((employee) => (
+                        pageEmployees.map((employee) => (
                             <tr key={employee.id}>
                                 <td>
                                     <strong>
@@ -176,6 +249,41 @@ export function EmployeeTable({
                     )}
                 </tbody>
             </table>
+
+            <div className="table-pagination">
+                <p className="pagination-summary" aria-live="polite">
+                    Showing {firstDisplayedEmployee}-{lastDisplayedEmployee} of {sortedEmployees.length} employees
+                </p>
+                <nav className="pagination-controls" aria-label="Employee table pages">
+                    <button
+                        type="button"
+                        className="pagination-button pagination-direction"
+                        onClick={() => setCurrentPage(pageToDisplay - 1)}
+                        disabled={pageToDisplay === 1}
+                    >
+                        Previous
+                    </button>
+                    {sortedEmployees.length > 0 && Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+                        <button
+                            key={page}
+                            type="button"
+                            className={`pagination-button${page === pageToDisplay ? ' is-current' : ''}`}
+                            onClick={() => setCurrentPage(page)}
+                            aria-current={page === pageToDisplay ? 'page' : undefined}
+                        >
+                            {page}
+                        </button>
+                    ))}
+                    <button
+                        type="button"
+                        className="pagination-button pagination-direction"
+                        onClick={() => setCurrentPage(pageToDisplay + 1)}
+                        disabled={pageToDisplay === totalPages}
+                    >
+                        Next
+                    </button>
+                </nav>
+            </div>
         </section>
     )
 }
